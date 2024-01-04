@@ -7,7 +7,7 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
         task.wait(3.05)
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
 
-    elseif class == "Egg" and gems <= 10000 then
+    elseif class == "Egg" and gems <= 75000 then
            task.wait(3.05)
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
 
