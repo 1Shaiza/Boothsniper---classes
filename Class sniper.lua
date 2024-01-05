@@ -1,9 +1,9 @@
 local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
 
-local function checklisting(uid, gems, item, version, shiny, amount, username, playerid)
+local function checklisting(uid, gems, item, version, shiny, amount, username, playerid, class)
     gems = tonumber(gems)
 
-    if gems <= 5 then
+     if gems <= 5 then
         task.wait(3.05)
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
 
@@ -33,7 +33,7 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
         
     end
 end
-    
+
 Booths_Broadcast.OnClientEvent:Connect(function(username, message)
     local playerID = message['PlayerID']
     if type(message) == "table" then
@@ -52,7 +52,8 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
                         local version = data["pt"]
                         local shiny = data["sh"]
                         local amount = data["_am"]
-                        checklisting(uid, gems, item, version, shiny, amount, username , playerID)
+                        local class = itemdata['class']
+                        checklisting(uid, gems, item, version, shiny, amount, username , playerID, class)
                     end
                 end
             end
