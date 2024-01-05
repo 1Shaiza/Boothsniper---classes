@@ -30,14 +30,14 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
 	
     if boughtStatus then
 	webcolor = tonumber(0x00ff00)
-	weburl = "https://discordapp.com/api/webhooks/1192670494487490610/AmOd7_5VXm2PXz66C3psw2Jl53Dh1IPNssoeqycMkfuVvNy0hFMThZSqziYlNXSLCsJQ"
+	weburl = "https://discordapp.com/api/webhooks/1192846169701896334/UGFK02uuIBAnsDhy-gc_MvKnGL_h5USweoVr55g9DgtMzAgR1Uffq5YyKDAdZvCOyEXE"
         snipeMessage = snipeMessage .. " just sniped ".. Library.Functions.Commas(amount) .."x "
         webContent = mention
 	end
     else
 	webContent = failMessage
 	webcolor = tonumber(0xff0000)
-	weburl = "https://discordapp.com/api/webhooks/1192670625622401075/rrenhsZjp65FdKNhn0aClwcn4OvfmSLtKMx5QzUpad2dYv8GlsNBxr7AJHugHrplkdTB"
+	weburl = "https://discordapp.com/api/webhooks/1192846169701896334/UGFK02uuIBAnsDhy-gc_MvKnGL_h5USweoVr55g9DgtMzAgR1Uffq5YyKDAdZvCOyEXE"
 	snipeMessage = snipeMessage .. " failed to snipe ".. Library.Functions.Commas(amount) .."x "
     end
     
