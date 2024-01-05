@@ -130,8 +130,12 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
                 local playerid = message['PlayerID']
                 local class = tostring(listing["ItemData"]["class"])
                 local unitGems = gems/amount
-                                 
-                if class == "Egg" and unitGems <= 75000 then
+
+
+       if unitGems <= 5 then
+           coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp)
+                    return				
+ elseif class == "Egg" and unitGems <= 75000 then
            coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp)
                     return
  elseif class == "Charm" and unitGems <= 10000 then
