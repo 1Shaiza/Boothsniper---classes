@@ -1,12 +1,21 @@
-task.wait(10) -- i hate library loading
+local osclock = os.clock()
+repeat task.wait() until game:IsLoaded()
 
 setfpscap(8)
-game.Players.LocalPlayer.PlayerScripts.Scripts.Core["Idle Tracking"].Enabled = false
 game:GetService("RunService"):Set3dRenderingEnabled(false)
 local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChild("Booths_Broadcast")
+local Players = game:GetService('Players')
+local getPlayers = Players:GetPlayers()
+local PlayerInServer = #getPlayers
 local http = game:GetService("HttpService")
+local ts = game:GetService("TeleportService")
 local rs = game:GetService("ReplicatedStorage")
-local Library = require(rs:WaitForChild("Library"))
+local Library = require(rs:WaitForChild('Library'))
+local snipeNormal
+
+if not snipeNormalPets then
+    snipeNormalPets = false
+end
 
 local vu = game:GetService("VirtualUser")
 Players.LocalPlayer.Idled:connect(function()
@@ -25,15 +34,22 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
 	
     if boughtStatus then
 	webcolor = tonumber(0x00ff00)
-	weburl = "https://discordapp.com/api/webhooks/1192846169701896334/UGFK02uuIBAnsDhy-gc_MvKnGL_h5USweoVr55g9DgtMzAgR1Uffq5YyKDAdZvCOyEXE"
-        snipeMessage = snipeMessage .. " just sniped ".. Library.Functions.Commas(amount) .."x "
+	weburl = "https://discordapp.com/api/webhooks/1192670494487490610/AmOd7_5VXm2PXz66C3psw2Jl53Dh1IPNssoeqycMkfuVvNy0hFMThZSqziYlNXSLCsJQ"
+        snipeMessage = snipeMessage .. " just sniped a "
         webContent = mention
+	if snipeNormal == true then
+	    weburl = normalwebhook
+	    snipeNormal = false
 	end
     else
 	webContent = failMessage
 	webcolor = tonumber(0xff0000)
-	weburl = "https://discordapp.com/api/webhooks/1192846169701896334/UGFK02uuIBAnsDhy-gc_MvKnGL_h5USweoVr55g9DgtMzAgR1Uffq5YyKDAdZvCOyEXE"
-	snipeMessage = snipeMessage .. " failed to snipe ".. Library.Functions.Commas(amount) .."x "
+	weburl = webhookFail
+	snipeMessage = snipeMessage .. " failed to snipe a "
+	if snipeNormal == true then
+	    weburl = "https://discordapp.com/api/webhooks/1192670625622401075/rrenhsZjp65FdKNhn0aClwcn4OvfmSLtKMx5QzUpad2dYv8GlsNBxr7AJHugHrplkdTB"
+	    snipeNormal = false
+	end
     end
     
     snipeMessage = snipeMessage .. "**" .. versionStr
@@ -58,7 +74,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                 ['fields'] = {
                     {
                         ['name'] = "__Price:__",
-                        ['value'] = Library.Functions.ParseNumberSmart(gems) .. " 💎",
+                        ['value'] = tostring(gems) .. " 💎",
                     },
                     {
                         ['name'] = "__Bought from:__",
@@ -66,11 +82,11 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                     },
                     {
                         ['name'] = "__Amount:__",
-                        ['value'] = Library.Functions.Commas(amount) .. "x",
+                        ['value'] = tostring(amount) .. "x",
                     },
                     {
                         ['name'] = "__Remaining gems:__",
-                        ['value'] = Library.Functions.ParseNumberSmart(gemamount) .. " 💎",
+                        ['value'] = tostring(gemamount) .. " 💎",
                     },      
                     {
                         ['name'] = "__PetID:__",
@@ -78,7 +94,7 @@ local function processListingInfo(uid, gems, item, version, shiny, amount, bough
                     },
                 },
 		["footer"] = {
-                        ["icon_url"] = "https://cdn.discordapp.com/attachments/1034579708312027138/1192675124571283516/Sad.png?ex=65a9f044&is=65977b44&hm=5c952d9fd71c948e336543b3214453f3f07eee01ca43dfbfeb01672200037071&", -- optional
+                        ["icon_url"] = "https://cdn.discordapp.com/attachments/1034579708312027138/1192675124571283516/Sad.png?ex=65a9f044&is=65977b44&hm=5c952d9fd71c948e336543b3214453f3f07eee01ca43dfbfeb01672200037071&",
                         ["text"] = "Heavily Modified by Shaiza"
 		}
             },
@@ -103,7 +119,7 @@ end
 
 local function tryPurchase(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp, snipeNormal)
     if buytimestamp > listTimestamp then
-      task.wait(3.05 - Players.LocalPlayer:GetNetworkPing())
+      task.wait(3.01 - Players.LocalPlayer:GetNetworkPing())
     end
     local boughtPet, boughtMessage = game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
     processListingInfo(uid, gems, item, version, shiny, amount, username, boughtPet, class, boughtMessage, snipeNormal)
@@ -139,7 +155,7 @@ Booths_Broadcast.OnClientEvent:Connect(function(username, message)
                 local unitGems = gems/amount
 		snipeNormal = false
                                  
-                 if unitGems <= 5 then
+                if unitGems <= 5 then
            coroutine.wrap(tryPurchase)(uid, gems, item, version, shiny, amount, username, class, playerid, buytimestamp, listTimestamp)
                     return				
  elseif class == "Egg" and unitGems <= 75000 then
