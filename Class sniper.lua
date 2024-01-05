@@ -1,8 +1,3 @@
-local osclock = os.clock()
-if not game:IsLoaded() then
-    game.Loaded:Wait()
-end
-
 task.wait(10) -- i hate library loading
 
 setfpscap(8)
