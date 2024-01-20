@@ -3,7 +3,7 @@ local Booths_Broadcast = game:GetService("ReplicatedStorage").Network:WaitForChi
 local function checklisting(uid, gems, item, version, shiny, amount, username, playerid, class)
     gems = tonumber(gems)
 
-     if gems <= 5 then
+     if gems <= 1 then
         task.wait(3.01)
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
 
