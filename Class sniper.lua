@@ -19,11 +19,11 @@ local function checklisting(uid, gems, item, version, shiny, amount, username, p
            task.wait(3.01)
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
 
-    elseif class == "Potion" and gems <= 500 then
+    elseif class == "Potion" and gems <= 100 then
            task.wait(3.01)
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
 
-    elseif class == "Misc" and gems <= 500 then
+    elseif class == "Misc" and gems <= 100 then
            task.wait(3.01)
         game:GetService("ReplicatedStorage").Network.Booths_RequestPurchase:InvokeServer(playerid, uid)
     
